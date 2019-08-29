@@ -23,7 +23,7 @@ $('#search-form').on('submit', e =>  {
         json.data.children.forEach(thread => {
             html += `
                 <li>
-                    <a href="${thread.data.url}" target="_blank">${thread.data.title}</a>
+                    <a target="_blank" href="${thread.data.url}">${thread.data.title}</a>
                 </li>
                 <ul>
                     <li>Score: ${thread.data.score}</li>
@@ -32,6 +32,19 @@ $('#search-form').on('submit', e =>  {
             `;
         });
         html += '</ul>';
+
+        DOMPurify.addHook('afterSanitizeAttributes', function(node) {
+            // set all elements owning target to target=_blank
+            if ('target' in node) {
+                node.setAttribute('target','_blank');
+            }
+            // set non-HTML/MathML links to xlink:show=new
+            if (!node.hasAttribute('target') 
+                && (node.hasAttribute('xlink:href') 
+                    || node.hasAttribute('href'))) {
+                node.setAttribute('xlink:show', 'new');
+            }
+        });
 
         let sanitizedHtml = DOMPurify.sanitize(html);
 
