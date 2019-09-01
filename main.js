@@ -13,10 +13,12 @@ $('#search-form').on('submit', e =>  {
             </div>
         </div>`);
     let subreddit = $('#search-box').val();
-    let promise = $.ajax({
+
+    let promise = fetchTimeout(5000, $.ajax({
         type: 'GET',
-        url: `https://www.reddit.com/r/${subreddit}.json`
-    })
+        url: `https://www.reddit.com/r/${subreddit}.json`,
+    }));
+
 
     promise.then(json => {
         let html = '<ul>';
@@ -49,5 +51,15 @@ $('#search-form').on('submit', e =>  {
         let sanitizedHtml = DOMPurify.sanitize(html);
 
         $('#results').html(sanitizedHtml);
-    });
+    })
+    .catch(error => $('#results').html('No results found.'));
 });
+
+function fetchTimeout(m, p) {
+    const timeout = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        reject(new Error('Request timeout'));
+      }, m);
+    });
+    return Promise.race([timeout, p]);
+  }
