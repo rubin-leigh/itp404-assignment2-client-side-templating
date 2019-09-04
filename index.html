@@ -12,9 +12,24 @@
     </form>
     <div id="results"></div>
 
+    <template id="subreddit-template">
+      {{#each threads}}
+        <div class="subreddit">
+          <a target="_blank" href="{{url}}" clas="title">{{data.title}}</a>
+          <p>Score: {{data.score}}</p>
+          <p>Subscribers: {{formatted-num data.subreddit_subscribers}}</p>
+          {{#if data.num_comments}}
+            <p>Comments: {{formatted-num data.num_comments}}</p>
+          {{else}}
+            <p>No comments</p>
+          {{/if}}
+        </div>
+      {{/each}}
+    </template>
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="handlebars-v4.1.2.js"></script>
     <script src="main.js"></script>
-    <script src="purify.min.js"></script>
 
 </body>
 </html>
