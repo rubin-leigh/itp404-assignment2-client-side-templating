@@ -15,7 +15,7 @@
     <template id="subreddit-template">
       {{#each threads}}
         <div class="subreddit">
-          <a target="_blank" href="{{url}}" clas="title">{{data.title}}</a>
+          <a target="_blank" href="{{data.url}}" clas="title">{{data.title}}</a>
           <p>Score: {{data.score}}</p>
           <p>Subscribers: {{formatted-num data.subreddit_subscribers}}</p>
           {{#if data.num_comments}}
